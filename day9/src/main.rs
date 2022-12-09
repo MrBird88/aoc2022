@@ -40,7 +40,7 @@ fn main() {
         }
     }
     println!(
-        "Part 1:\n\tTail visited {} locations.\nPart2:\n\tTail visited {} locations.",
+        "Part 1:\n\tTail visited {} locations.\nPart 2:\n\tTail visited {} locations.",
         visited[0].len(),
         visited[1].len()
     );
