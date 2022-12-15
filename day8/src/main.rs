@@ -1,4 +1,7 @@
+use std::time::Instant;
+
 fn main() {
+    let t0 = Instant::now();
     let input: Vec<_> = include_str!("input.txt").split("\r\n").collect();
     let (h_grid, v_grid) = parse_input(input);
     let mut count = h_grid.len() * 4 - 4;
@@ -39,7 +42,8 @@ fn main() {
             }
         }
     }
-    println!("count = {count}\nmax scenic value = {max_scene}")
+    println!("count = {count}\nmax scenic value = {max_scene}");
+    println!("Total time: {:?}", Instant::now().duration_since(t0));
 }
 
 fn parse_input(input: Vec<&str>) -> (Vec<Vec<u32>>, Vec<Vec<u32>>) {
