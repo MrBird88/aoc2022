@@ -69,6 +69,7 @@ fn main() {
         }
     }
 
+    //Part 2
     let mut vec_count = vec![];
 
     for coord in vec_a {
@@ -78,7 +79,6 @@ fn main() {
         queue.clear();
         queue.push_back((coord.0, coord.1, 0));
 
-        // Part 2
         while let Some(_) = queue.front() {
             let (x1, y1, count) = queue.pop_front().unwrap();
 
