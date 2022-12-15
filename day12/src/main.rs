@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, fs::File, io::Write, time::Instant};
+use std::{collections::VecDeque, time::Instant};
 
 fn main() {
     let t0 = Instant::now();
@@ -9,10 +9,6 @@ fn main() {
     input[start.0][start.1] = b'a';
     input[stop.0][stop.1] = b'z';
 
-    let mut v_input = input.clone();
-    v_input[start.0][start.1] = b'S';
-    v_input[stop.0][stop.1] = b'E';
-
     let mut visited = vec![vec![false; input[0].len()]; input.len()];
     visited[start.0][start.1] = true;
 
@@ -21,6 +17,7 @@ fn main() {
 
     let mut ans = 0;
 
+    // Part 1
     while let Some(_) = queue.front() {
         let (x1, y1, count) = queue.pop_front().unwrap();
 
@@ -57,20 +54,77 @@ fn main() {
         for (x, y, count) in valid_moves {
             if !visited[x][y] {
                 visited[x][y] = true;
-                v_input[x][y] = b'.';
                 queue.push_back((x, y, count));
             }
         }
     }
 
-    let mut v_file = File::create("v_input.txt").unwrap();
-    for vec in v_input {
-        for num in vec {
-            write!(v_file, "{}", num as char).unwrap();
+    let mut vec_a = vec![];
+
+    for i in 0..input.len() {
+        for j in 0..input[0].len() {
+            if input[i][j] == b'a' {
+                vec_a.push((i, j));
+            }
         }
-        write!(v_file, "\n").unwrap();
     }
+
+    let mut vec_count = vec![];
+
+    for coord in vec_a {
+        let mut visited = vec![vec![false; input[0].len()]; input.len()];
+        visited[coord.0][coord.1] = true;
+
+        queue.clear();
+        queue.push_back((coord.0, coord.1, 0));
+
+        // Part 2
+        while let Some(_) = queue.front() {
+            let (x1, y1, count) = queue.pop_front().unwrap();
+
+            if (x1, y1) == (stop.0, stop.1) {
+                println!("break");
+                vec_count.push(count);
+                break;
+            }
+
+            let possible_moves = [
+                (x1.checked_sub(1), Some(y1)),
+                (Some(x1), Some(y1 + 1)),
+                (Some(x1 + 1), Some(y1)),
+                (Some(x1), y1.checked_sub(1)),
+            ];
+
+            let mut valid_moves = vec![];
+
+            for (a, b) in possible_moves {
+                match (a, b) {
+                    (Some(x), Some(y)) => {
+                        if x < input.len() && y < input[0].len() {
+                            if input[x][y] <= input[x1][y1] + 1 {
+                                valid_moves.push((x, y));
+                            }
+                        }
+                    }
+
+                    (_, _) => {
+                        continue;
+                    }
+                }
+            }
+
+            for (x, y) in valid_moves {
+                if !visited[x][y] {
+                    visited[x][y] = true;
+                    queue.push_back((x, y, count + 1));
+                }
+            }
+        }
+    }
+
+    let ans2 = vec_count.iter().min().unwrap();
     println!("Part 1:\n\tSteps: {}\n", ans);
+    println!("Part 2:\n\tSteps: {}\n", ans2);
 
     println!("Time taken: {:?}", Instant::now().duration_since(t0));
 }
