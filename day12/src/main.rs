@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, time::Instant, fs::File, io::Write};
+use std::{collections::VecDeque, fs::File, io::Write, time::Instant};
 
 fn main() {
     let t0 = Instant::now();
@@ -43,12 +43,10 @@ fn main() {
             match (a, b) {
                 (Some(x), Some(y)) => {
                     if x < input.len() && y < input[0].len() {
-                        let val_check = match input[x][y].checked_sub(input[x1][y1]) {
-                            Some(val) => val,
-                            None => 2,
-                        };
-
-                        if val_check <= 1 {
+                        if input[x][y] == input[x1][y1] + 1 ||
+                           input[x][y] == input[x1][y1]     ||
+                           input[x][y] == input[x1][y1] - 1
+                        {
                             valid_moves.push((x, y, count + 1));
                         }
                     }
