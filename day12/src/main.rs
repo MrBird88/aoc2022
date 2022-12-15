@@ -6,7 +6,6 @@ fn main() {
     let mut input = parse_input();
 
     let (start, stop) = parse_start_stop(&input);
-    println!("Start: {:?} Stop: {:?}", start, stop);
     input[start.0][start.1] = b'a';
     input[stop.0][stop.1] = b'z';
 
@@ -44,8 +43,7 @@ fn main() {
                 (Some(x), Some(y)) => {
                     if x < input.len() && y < input[0].len() {
                         if input[x][y] == input[x1][y1] + 1 ||
-                           input[x][y] == input[x1][y1]     ||
-                           input[x][y] == input[x1][y1] - 1
+                           input[x][y] <= input[x1][y1]
                         {
                             valid_moves.push((x, y, count + 1));
                         }
@@ -65,7 +63,6 @@ fn main() {
                 queue.push_back((x, y, count));
             }
         }
-        println!("{:?} {}", (x1, y1), count);
     }
 
     let mut v_file = File::create("v_input.txt").unwrap();
