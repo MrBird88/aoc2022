@@ -42,9 +42,7 @@ fn main() {
             match (a, b) {
                 (Some(x), Some(y)) => {
                     if x < input.len() && y < input[0].len() {
-                        if input[x][y] == input[x1][y1] + 1 ||
-                           input[x][y] <= input[x1][y1]
-                        {
+                        if input[x][y] <= input[x1][y1] + 1 {
                             valid_moves.push((x, y, count + 1));
                         }
                     }
