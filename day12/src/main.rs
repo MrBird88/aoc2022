@@ -40,7 +40,7 @@ fn main() {
                 (Some(x), Some(y)) => {
                     if x < input.len() && y < input[0].len() {
                         if input[x][y] <= input[x1][y1] + 1 {
-                            valid_moves.push((x, y, count + 1));
+                            valid_moves.push((x, y));
                         }
                     }
                 }
@@ -51,10 +51,10 @@ fn main() {
             }
         }
 
-        for (x, y, count) in valid_moves {
+        for (x, y) in valid_moves {
             if !visited[x][y] {
                 visited[x][y] = true;
-                queue.push_back((x, y, count));
+                queue.push_back((x, y, count + 1));
             }
         }
     }
