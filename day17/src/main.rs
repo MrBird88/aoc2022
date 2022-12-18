@@ -50,11 +50,11 @@ fn main() {
         }
 
         // Remove extra space at "top" of solution;
-        while part_1.last() == Some( &0b100000001 ) {
+        while part_1.last() == Some(&0b100000001) {
             part_1.pop();
         }
 
-    // And do it all over.
+        // And do it all over.
     }
 
     part_1.iter_mut().for_each(|num| {
@@ -78,7 +78,7 @@ fn main() {
     //     println!("{num:b}");
     // }
 
-    println!("Total lines: {}", part_1.len());
+    println!("Total lines: {}", part_1.len() - 1);
 
     println!("Total time: {:?}", Instant::now().duration_since(t0));
 }
@@ -141,10 +141,14 @@ impl Shape {
     fn to_vec(&self) -> Vec<u32> {
         match self {
             Self::Horizontal => vec![0b000111100],
+
             Self::Cross => vec![0b000010000, 0b000111000, 0b000010000],
+
             Self::Corner => vec![0b000111000, 0b000001000, 0b000001000],
-            Self::Vertical => vec![0b001000000, 0b001000000, 0b001000000, 0b001000000],
-            Self::Square => vec![0b001100000, 0b001100000],
+
+            Self::Vertical => vec![0b000100000, 0b000100000, 0b000100000, 0b000100000],
+
+            Self::Square => vec![0b000110000, 0b000110000],
         }
     }
 }
