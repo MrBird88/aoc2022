@@ -14,21 +14,26 @@ fn main() {
     let mut s_iter = s.iter().cycle();
     let mut d_iter = input.iter().cycle();
 
-    let mut part_1: Vec<u32> = vec![0b111111111];
+    let mut answer: Vec<u32> = vec![0b111111111];
+    // let mut count: u64 = 0;
 
+    // Part 1:
     // 2022 == number of rocks to iterate through
+
+    // Part 2:
+    // 1_000_000_000_000 == number of rocks
     for _ in 0..2022 {
         let shape = s_iter.next().unwrap();
         let mut vec = shape.to_vec();
 
         let empty = vec![0b100000001; 3 + vec.len()];
-        part_1.extend(empty);
+        answer.extend(empty);
 
-        let mut idx = part_1.len() - vec.len();
+        let mut idx = answer.len() - vec.len();
 
         loop {
             let dir = d_iter.next().unwrap();
-            let slice = Vec::from(&part_1[idx..idx + vec.len()]);
+            let slice = Vec::from(&answer[idx..idx + vec.len()]);
             dir.shift(&mut vec, &slice);
 
             idx -= 1;
@@ -37,7 +42,7 @@ fn main() {
             // through existing rock/ground then break loop.
             if vec
                 .iter()
-                .zip(part_1[idx..].iter())
+                .zip(answer[idx..].iter())
                 .any(|(a, b)| a & b != 0)
             {
                 break;
@@ -46,39 +51,39 @@ fn main() {
 
         // Merge rock with solution
         for i in 0..vec.len() {
-            part_1[idx + i + 1] |= vec[i];
+            answer[idx + i + 1] |= vec[i];
         }
 
         // Remove extra space at "top" of solution;
-        while part_1.last() == Some(&0b100000001) {
-            part_1.pop();
+        while answer.last() == Some(&0b100000001) {
+            answer.pop();
         }
 
         // And do it all over.
     }
 
-    part_1.iter_mut().for_each(|num| {
-        *num ^= 0b100000001;
-        *num >>= 1;
-    });
+    // answer.iter_mut().for_each(|num| {
+    //     *num ^= 0b100000001;
+    //     *num >>= 1;
+    // });
 
-    part_1.iter().rev().for_each(|x| {
-        let s = format!("{x:07b}");
-        for x in s.chars() {
-            if x == '1' {
-                print!("🟥")
-            } else {
-                print!("⬛")
-            }
-        }
-        print!("\n");
-    });
+    // answer.iter().rev().for_each(|x| {
+    //     let s = format!("{x:07b}");
+    //     for x in s.chars() {
+    //         if x == '1' {
+    //             print!("🟥")
+    //         } else {
+    //             print!("⬛")
+    //         }
+    //     }
+    //     print!("\n");
+    // });
 
-    // for num in part_1.iter().rev() {
+    // for num in answer.iter().rev() {
     //     println!("{num:b}");
     // }
 
-    println!("Total lines: {}", part_1.len() - 1);
+    println!("Total lines: {}", answer.len() - 1);
 
     println!("Total time: {:?}", Instant::now().duration_since(t0));
 }
@@ -140,15 +145,33 @@ enum Shape {
 impl Shape {
     fn to_vec(&self) -> Vec<u32> {
         match self {
-            Self::Horizontal => vec![0b000111100],
+            Self::Horizontal => vec![
+                0b000111100
+                ],
 
-            Self::Cross => vec![0b000010000, 0b000111000, 0b000010000],
+            Self::Cross => vec![
+                0b000010000,
+                0b000111000,
+                0b000010000,
+                ],
 
-            Self::Corner => vec![0b000111000, 0b000001000, 0b000001000],
+            Self::Corner => vec![
+                0b000111000,
+                0b000001000,
+                0b000001000,
+                ],
 
-            Self::Vertical => vec![0b000100000, 0b000100000, 0b000100000, 0b000100000],
+            Self::Vertical => vec![
+                0b000100000,
+                0b000100000,
+                0b000100000,
+                0b000100000,
+                ],
 
-            Self::Square => vec![0b000110000, 0b000110000],
+            Self::Square => vec![
+                0b000110000,
+                0b000110000,
+                ],
         }
     }
 }
